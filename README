@@ -1,18 +1,17 @@
 Jukebox
 ========
 
-#
-#This code is unsafe!
-#Currently anyone can add a command to a database
-#Even if run as a regular user!
-#In the meanwhile make the files writeable by only root
-#
+Jukebox is designed to rate RFID data via a serial device (but can be easily adapted to any serial device).
+Using this code it checks a database to find what command to run. So you may tag a CD case and have
+jukebox load the album playlist.
 
-Simple script set upt to interpret RFID codes (data coming over serial).
-It then loads playlists for xmms.
-
-Can be modified for any purpose, e.g. have it load comics into a viewer.
+##Warning
+If used as is this code may be unsafe! Since most people will run jukebox as root to access /dev/tty* devices 
+yet anyone can alter the database. solution? add a rule to let your regular user access the device.(recommended)
+make the db, jukebox and addtags root writeable only.(bad choice)
 
 ##TODO
 # Make a nice gui
 # Make code safe
+# Add command types
+# Make it so we only need jukebox
