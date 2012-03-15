@@ -5,14 +5,22 @@ def play(code):
 	try:
 		c.execute('select cmd from tags where tag=?',(code,))
 	except sqlite3.OperationalError:
-		print "Run addTag.py with no commands to set up the db."
-		sys.exit(1)
+		c.execute('create table tags (tag text, cmd text)')
+		play(code)
 	result = c.fetchone()
 	if(result):
 		print result[0]
 		os.system(result[0]+"&")
 	else:
 		print "Tag not found!"
+		if(raw_input("Would you like to add it? [y/n]")!='y'):
+			return 1
+		cmd = raw_input()
+
+		c.execute("insert into tags values (?, ?)", (code, cmd, ))
+		print "Added",code,"to run '",cmd,"'"
+		db.commit()
+		return 0
 def parse(code):
 	code = code.split('-')[1]
 	try:

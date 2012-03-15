@@ -14,4 +14,3 @@ make the db, jukebox and addtags root writeable only.(bad choice)
 # Make a nice gui
 # Make code safe
 # Add command types
-# Make it so we only need jukebox
