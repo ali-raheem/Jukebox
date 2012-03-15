@@ -1,11 +1,17 @@
 Jukebox
 ========
 
+#
+#This code is unsafe!
+#Currently anyone can add a command to a database
+#Even if run as a regular user!
+#
+
 Simple script set upt to interpret RFID codes (data coming over serial).
 It then loads playlists for xmms.
 
 Can be modified for any purpose, e.g. have it load comics into a viewer.
 
 ##TODO
-# Add database link to codes
 # Make a nice gui
+# Make code safe
