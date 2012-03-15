@@ -1,9 +1,14 @@
 Jukebox
 ========
 
-Jukebox is designed to rate RFID data via a serial device (but can be easily adapted to any serial device).
-Using this code it checks a database to find what command to run. So you may tag a CD case and have
-jukebox load the album playlist.
+Jukebox is designed to take RFID data (or any data via a serial device) using this code it checks a database to find what command to run.
+
+So you may tag a CD case and have jukebox load the album playlist.
+
+To use this code put a character source in a serial port, default port used is /dev/ttyACM0 alter parse() to handle
+your data.
+
+Make sure to escape commands you want run if they have spaces or special chars like !.
 
 ##Warning
 If used as is this code may be unsafe! Since most people will run jukebox as root to access /dev/tty* devices 
