@@ -2,8 +2,9 @@
 
 import sys, sqlite3
 
+db_name = 'db'
 def main(*args):
-	db = sqlite3.connect('jukebox_db')
+	db = sqlite3.connect(db_name)
 	c = db.cursor()
 	if(len(sys.argv)!=3):
 		print "Usage: %s tag file"%sys.argv[0]
@@ -14,18 +15,22 @@ def main(*args):
 		except sqlite3.OperationalError:
 			print "Creating database table."
 			c.execute('create table tags (tag text, cmd text)')
-			db.commit()
 		return 1
 	tag = sys.argv[1]
 	cmd = sys.argv[2]
 	print "Adding",tag,"with command",cmd,"to db."
-	c.execute("select cmd from tags where tag=?",(tag, ))
+	try:
+		c.execute("select cmd from tags where tag=?",(tag, ))
+	except sqlite3.OperationalError:
+                        print "Creating database table."
+                        c.execute('create table tags (tag text, cmd text)')
 	found = c.fetchone()
 	if(found):
 		print "Found tag",tag,"with cmd",found[0]
 	else:
 		c.execute("insert into tags values (?, ?)", (tag, cmd, ))
-		db.commit()
+
+	db.commit()
 	c.close()
 
 	return 0

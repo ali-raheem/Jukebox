@@ -5,6 +5,7 @@ Jukebox
 #This code is unsafe!
 #Currently anyone can add a command to a database
 #Even if run as a regular user!
+#In the meanwhile make the files writeable by only root
 #
 
 Simple script set upt to interpret RFID codes (data coming over serial).

@@ -2,9 +2,14 @@
 import serial, os, sys, sqlite3
 
 def play(code):
-	c.execute('select cmd from tags where tag=?',(code,))
+	try:
+		c.execute('select cmd from tags where tag=?',(code,))
+	except sqlite3.OperationalError:
+		print "Run addTag.py with no commands to set up the db."
+		sys.exit(1)
 	result = c.fetchone()
 	if(result):
+		print result[0]
 		os.system(result[0]+"&")
 	else:
 		print "Tag not found!"
@@ -19,7 +24,7 @@ def parse(code):
 			print "Probs not a code."
 	return code
 
-db_name = "jukebox_db"
+db_name = "db"
 db = sqlite3.connect(db_name)
 c = db.cursor()
 
