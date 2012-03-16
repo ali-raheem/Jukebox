@@ -11,7 +11,7 @@ your data.
 
 Make sure to escape commands you want run if they have spaces or special chars like !.
 
-##Warning
+#Warning
 
 If used as is this code may be unsafe! Since most people will run jukebox as root to access /dev/tty* devices 
 yet anyone can alter the database. solution? add a rule to let your regular user access the device.(recommended)
@@ -19,6 +19,6 @@ make the db, jukebox and addtags root writeable only.(bad choice)
 
 ##TODO
 
-# Make a nice gui?
-# Make code safe
-# Fix lastTag thingy
+- Make a nice gui?
+- Make code safe
+- Fix lastTag thingy
