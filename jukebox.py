@@ -1,15 +1,34 @@
 #!/usr/bin/python
 import serial, os, sys, sqlite3
 
-s = serial.Serial("/dev/ttyACM0", 115200) # Change me to the device
 dbName = "db"
-db = sqlite3.connect(dbName)
-c = db.cursor()
-s.open()
+serialDevice = "/dev/ttyACM1"
 lastTag = 0
+s = 0
+db = 0
+c = 0
+
+def init_serial():
+	global s
+	s = serial.Serial(serialDevice, 115200)
+	s.open()
+
+def init_db():
+	global db
+	global c
+	db = sqlite3.connect(dbName)
+	c = db.cursor()
+	try:
+		c.execute("select * from tags")
+	except sqlite3.OperationalError:
+		print "Creating database."
+		c.execute('create table tags (id INTEGER PRIMARY KEY, tag TEXT UNIQUE, name TEXT, cmd TEXT)')
+		db.commit()
+	l = c.fetchall()
+	print "%d tags known."%len(l)
 
 def parse(code):
-#Should return a plain string used as the SQL id.
+#Should return a plain string used as the SQL tag.
 	code = code.split('-')[1]
 	try:
 		code = code.split('\r')[0]
@@ -17,44 +36,46 @@ def parse(code):
 		try:
 			code = code.split('\n')[0]
 		except IndexError:
-			print "Probs not a code."
+			print "Could not parse code."
 	return code
 
 def play(code):
 	global lastTag
-	try:
-		c.execute('select cmd,name from tags where tag=?',(code,))
-	except sqlite3.OperationalError:
-		c.execute('create table tags (id INTEGER PRIMARY KEY, tag TEXT UNIQUE, name TEXT, cmd TEXT)')
-		play(code)
+	c.execute('select cmd,name from tags where tag=?',(code,))
 	result = c.fetchone()
 	if(result):
 		cmd = result[0]
 		name = result[1]
 		lastTag = code
 		print "Loading %s..."%name
-		os.system(cmd+"&")
+		os.system(cmd)
 	else:
 		print "Tag not found!"
-		if(raw_input("Would you like to add it? [y/n]")!='y'):
+		if(raw_input("Would you like to add it? [y/n] ")!='y'):
 			return 1
 		name = raw_input("Give it a name: ")
 		cmd = raw_input("What command should be run: ")
+		if(raw_input("So add %s (%s) to run '%s'(make sure this is escaped)? [y/n] "%(name,code,cmd))!='y'):
+			return 1
 		c.execute("insert into tags values (NULL, ?, ?, ?)", (code, name, cmd, ))
 		print "Added %s (%s) to run '%s'"%(name, code, cmd)
 		db.commit()
 		return 0
 
-def main():
+def wait():
 	while 1:
 		if(s.inWaiting()):
 			code =  s.read(s.inWaiting())
 			code = parse(code)
 			print "Read code %s..."%code
 			if(code != lastTag):
-				print code,lastTag
 				play(code)
 			s.flushOutput()
+def main():
+	init_db()
+	init_serial()
+	wait()
+
 if __name__ == "__main__":
         sys.exit(main())
 
