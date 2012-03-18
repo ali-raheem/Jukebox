@@ -1,5 +1,5 @@
-##Jukebox
-========
+Jukebox
+=
 
 Jukebox is designed to take RFID data (or any data via a serial device) using this code it checks a database to find what command to run.
 
@@ -23,3 +23,4 @@ make the db, jukebox and addtags root writeable only.(bad choice)
 - Make a nice gui?
 - Make code safe
 - Fix lastTag thingy
+
