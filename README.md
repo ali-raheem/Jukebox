@@ -1,10 +1,11 @@
-Jukebox
+##Jukebox
 ========
 
 Jukebox is designed to take RFID data (or any data via a serial device) using this code it checks a database to find what command to run.
 
-So you may tag a CD case and have jukebox load the album playlist.
-Or you may use a barcode scanner and have it update a shopping list when yout ake stuff out of the fridge.
+- So you may tag a CD case and have jukebox load the album playlist.
+- Or you may use a barcode scanner and have it update a shopping list when yout ake stuff out of the fridge.
+- My favourite, tag a picture and have it the digital form or album!
 
 To use this code put a character source in a serial port, default port used is /dev/ttyACM0 alter parse() to handle
 your data.

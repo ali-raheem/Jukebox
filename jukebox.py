@@ -48,7 +48,7 @@ def play(code):
 		name = result[1]
 		lastTag = code
 		print "Loading %s..."%name
-		os.system(cmd)
+		os.system(cmd+" &")
 	else:
 		print "Tag not found!"
 		if(raw_input("Would you like to add it? [y/n] ")!='y'):
