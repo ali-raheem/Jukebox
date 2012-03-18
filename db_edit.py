@@ -3,15 +3,14 @@ import serial, os, sys, sqlite3
 
 dbName = "db"
 serialDevice = "/dev/ttyACM0"
-lastTag = 0
 s = 0
 db = 0
 c = 0
 
 def init_serial():
-	global s
-	s = serial.Serial(serialDevice, 115200)
-	s.open()
+        global s
+        s = serial.Serial(serialDevice, 115200)
+        s.open()
 
 def init_db():
 	global db
@@ -40,15 +39,17 @@ def parse(code):
 	return code
 
 def play(code):
-	global lastTag
-	c.execute('select cmd,name from tags where tag=?',(code,))
+	c.execute('select cmd,name,id from tags where tag=?',(code,))
 	result = c.fetchone()
 	if(result):
 		cmd = result[0]
 		name = result[1]
-		lastTag = code
-		print "Loading %s..."%name
-		os.system(cmd)
+		id = result[2]
+		if(raw_input("Found %s (%s) to run '%s' delete? [y/n] "%(name,code,cmd))!='y'):
+			return 1
+		c.execute("delete from tags where id=?", (id, ))
+		db.commit()
+		return 1
 	else:
 		print "Tag not found!"
 		if(raw_input("Would you like to add it? [y/n] ")!='y'):
@@ -68,8 +69,7 @@ def wait():
 			code =  s.read(s.inWaiting())
 			code = parse(code)
 			print "Read code %s..."%code
-			if(code != lastTag):
-				play(code)
+			play(code)
 			s.flushOutput()
 def main():
 	init_db()
