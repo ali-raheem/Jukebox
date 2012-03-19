@@ -1,8 +1,9 @@
 #!/usr/bin/python
-import serial, os, sys, sqlite3
+import serial, os, sys, sqlite3, re
 
 dbName = "db"
-serialDevice = "/dev/ttyACM0"
+serialDevice = "/dev/ttyACM1"
+regex = re.compile('[a-fA-F0-9]{10,10}')
 lastTag = 0
 s = 0
 db = 0
@@ -29,15 +30,9 @@ def init_db():
 
 def parse(code):
 #Should return a plain string used as the SQL tag.
-	code = code.split('-')[1]
-	try:
-		code = code.split('\r')[0]
-	except IndexError:
-		try:
-			code = code.split('\n')[0]
-		except IndexError:
-			print "Could not parse code."
-	return code
+	global regex
+	index = regex.search(code).start()
+	return code[index:index+10]
 
 def play(code):
 	global lastTag
