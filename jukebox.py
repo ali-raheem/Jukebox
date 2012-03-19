@@ -31,8 +31,9 @@ def init_db():
 def parse(code):
 #Should return a plain string used as the SQL tag.
 	global regex
-	index = regex.search(code).start()
-	return code[index:index+10]
+	start = regex.search(code).start()
+	end = regex.search(code).end()
+	return code[start:end]
 
 def play(code):
 	global lastTag
