@@ -2,7 +2,7 @@
 import serial, os, sys, sqlite3, re
 
 dbName = "db"
-serialDevice = "/dev/ttyACM1"
+serialDevice = "/dev/serial/by-id/usb-Olimex_Ltd._CDC_Serial_Port_for_MOD-RFID125-USBSTICK_OL25B6F000138CD-if00"
 regex = re.compile('([a-fA-F0-9])+')
 lastTag = 0
 s = 0
