@@ -9,6 +9,12 @@ s = 0
 db = 0
 c = 0
 
+def parse(code):
+#Should return a plain string used as the SQL tag.
+	global regex
+	index = regex.search(code).span()
+	return code[index[0]:index[1]]
+
 def init_serial():
 	global s
 	s = serial.Serial(serialDevice, 115200)
@@ -22,17 +28,11 @@ def init_db():
 	try:
 		c.execute("select * from tags")
 	except sqlite3.OperationalError:
-		print "Creating database."
-		c.execute('create table tags (id INTEGER PRIMARY KEY, tag TEXT UNIQUE, name TEXT, cmd TEXT)')
-		db.commit()
+		print "Fatal: Error could not find DB!"
+		sys.exit(1)
 	l = c.fetchall()
 	print "%d tags known."%len(l)
 
-def parse(code):
-#Should return a plain string used as the SQL tag.
-	global regex
-	index = regex.search(code).span()
-	return code[index[0]:index[1]]
 
 def play(code):
 	global lastTag
@@ -45,16 +45,7 @@ def play(code):
 		print "Loading %s..."%name
 		os.system(cmd)
 	else:
-		print "Tag not found!"
-		if(raw_input("Would you like to add it? [y/n] ")!='y'):
-			return 1
-		name = raw_input("Give it a name: ")
-		cmd = raw_input("What command should be run: ")
-		if(raw_input("So add %s (%s) to run '%s'(make sure this is escaped)? [y/n] "%(name,code,cmd))!='y'):
-			return 1
-		c.execute("insert into tags values (NULL, ?, ?, ?)", (code, name, cmd, ))
-		print "Added %s (%s) to run '%s'"%(name, code, cmd)
-		db.commit()
+		print "Error: Tag not found!"
 		return 0
 
 def wait():
