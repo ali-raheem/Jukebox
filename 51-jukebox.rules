@@ -1,2 +1,3 @@
+# Olmex RFID reader
 BUS=="usb", SYSFS{idVendor}=="15ba", SYSFS{idProduct}=="000f", MODE="0666", SYMLINK+="RFIDreader"
 

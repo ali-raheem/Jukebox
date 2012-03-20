@@ -2,7 +2,7 @@
 import serial, os, sys, sqlite3
 
 dbName = "db"
-serialDevice = "/dev/ttyACM0"
+serialDevice = "/dev/RFIDreader"
 s = 0
 db = 0
 c = 0
