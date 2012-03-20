@@ -16,10 +16,10 @@ Make sure to escape commands you want run if they have spaces or special chars l
 
 - Make sure to edit the udev rule file for your device to make suitably readable device. This rule file creates a mode 666 /dev/RFIDreader symlink.
 - Run edit_db or jukebox to start adding tags to the db. My recommendation
--- Move edit_db and mode it so only root can run it,
--- Make sure db is someplace say /etc/jukebox/db where only root can write to it.
--- Move jukebox somewhere and mode it so only root can write to it but it can be used by anyone
--- run jukebox in background.
+1. Move edit_db and mode it so only root can run it,
+2. Make sure db is someplace say /etc/jukebox/db where only root can write to it.
+3. Move jukebox somewhere and mode it so only root can write to it but it can be used by anyone
+4. run jukebox in background.
 
 ####TODO
 
