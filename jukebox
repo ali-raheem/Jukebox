@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import serial, os, sys, sqlite3, re
 
-dbName = "db"
+dbName = "/etc/jukebox/db"
 serialDevice = "/dev/RFIDreader"
 regex = re.compile('([a-fA-F0-9])+')
 lastTag = 0
@@ -23,13 +23,14 @@ def init_serial():
 def init_db():
 	global db
 	global c
-	db = sqlite3.connect(dbName)
-	c = db.cursor()
 	try:
-		c.execute("select * from tags")
+		db = sqlite3.connect(dbName)
 	except sqlite3.OperationalError:
 		print "Fatal: Error could not find DB!"
 		sys.exit(1)
+		
+	c = db.cursor()
+	c.execute("select * from tags")
 	l = c.fetchall()
 	print "%d tags known."%len(l)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import serial, os, sys, sqlite3
 
-dbName = "db"
+dbName = "/etc/jukebox/db"
 serialDevice = "/dev/RFIDreader"
 s = 0
 db = 0
